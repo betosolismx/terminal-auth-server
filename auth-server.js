@@ -12,10 +12,8 @@ const hashedPassword = "$2b$10$r8nPdguLUxCI4iN0fdERxuUBhN.91ElKArDAhZgAkXWWnboTu
 
 app.post("/auth", async (req, res) => {
   const { password } = req.body;
-  const isValid = await bcrypt.compare(password, hashedPassword);
-  res.json({ success: isValid });
-});
 
-app.listen(3000, () => {
-  console.log("Servidor escuchando en http://localhost:3000");
+  const isValid = await bcrypt.compare(password, "$2b$10$r8nPdguLUxCI4iN0fdERxuUBhN.91ElKArDAhZgAkXWWnboTuQp6C"); // hash de MiClave1234
+
+  res.json({ success: isValid }); // 🔥 esta línea es importante
 });
