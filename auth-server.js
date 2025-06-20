@@ -7,7 +7,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// Contraseña original: MiClave1234
+// Contraseña: MiClave1234
 const hashedPassword = "$2b$10$r8nPdguLUxCI4iN0fdERxuUBhN.91ElKArDAhZgAkXWWnboTuQp6C";
 
 app.post("/auth", async (req, res) => {
@@ -21,13 +21,13 @@ app.post("/auth", async (req, res) => {
     const isValid = await bcrypt.compare(password, hashedPassword);
     res.json({ success: isValid });
   } catch (err) {
-    console.error("Error:", err);
-    res.status(500).json({ success: false, error: "Error interno del servidor" });
+    console.error("Error en el servidor:", err);
+    res.status(500).json({ success: false, error: "Error del servidor" });
   }
 });
 
-// Render necesita esta parte para que funcione
+// ⚠️ Esto es obligatorio en Render
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor escuchando en puerto ${PORT}`);
+  console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
