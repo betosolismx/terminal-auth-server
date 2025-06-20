@@ -7,13 +7,27 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// Contraseña: MiClave1234
+// Contraseña original: MiClave1234 (hasheada con bcrypt)
 const hashedPassword = "$2b$10$r8nPdguLUxCI4iN0fdERxuUBhN.91ElKArDAhZgAkXWWnboTuQp6C";
 
 app.post("/auth", async (req, res) => {
   const { password } = req.body;
 
-  const isValid = await bcrypt.compare(password, "$2b$10$r8nPdguLUxCI4iN0fdERxuUBhN.91ElKArDAhZgAkXWWnboTuQp6C"); // hash de MiClave1234
+  // Validación simple (por si password viene vacío)
+  if (!password) {
+    return res.status(400).json({ success: false, error: "No se envió contraseña" });
+  }
 
-  res.json({ success: isValid }); // 🔥 esta línea es importante
+  try {
+    const isValid = await bcrypt.compare(password, hashedPassword);
+    res.json({ success: isValid });
+  } catch (err) {
+    console.error("Error al verificar contraseña:", err);
+    res.status(500).json({ success: false, error: "Error interno del servidor" });
+  }
+});
+
+// 👇 Esencial para que Render inicie el servidor
+app.listen(3000, () => {
+  console.log("Servidor escuchando en http://localhost:3000");
 });
