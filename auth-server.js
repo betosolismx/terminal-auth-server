@@ -26,7 +26,7 @@ app.post("/auth", async (req, res) => {
   }
 });
 
-// ✅ Render usa un puerto dinámico en process.env.PORT
+// Render necesita esta parte para que funcione
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en puerto ${PORT}`);
